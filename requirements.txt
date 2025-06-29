@@ -1,0 +1,8 @@
+discord.py
+python-dotenv
+yt-dlp
+colorist
+discord
+discord.ext
+yt_dlp
+random
