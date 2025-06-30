@@ -4,3 +4,4 @@ yt-dlp
 colorist
 discord
 yt_dlp
+PyNaCl
