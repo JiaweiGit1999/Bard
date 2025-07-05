@@ -11,6 +11,9 @@ load_dotenv()
 MY_GUILD = ""
 guilds = []
 
+with open("cookies.txt", "w", encoding="utf-8") as f:
+    f.write(os.getenv("COOKIES_TEXT"))
+
 class MyClient(discord.Client):
     index = 0
     def __init__(self, *, intents: discord.Intents):
@@ -84,21 +87,25 @@ async def resume(interaction: discord.Interaction):
 )
 async def play(interaction: discord.Interaction,  url: str):
     """plays a song."""
-    if(interaction.user.voice != None):
-        await interaction.response.send_message(f'Added to Queue: {url}')
-        try:
-            channel = interaction.user.voice.channel
-            vc = await channel.connect()
-        except Exception as e:
-            server = interaction.guild
-            vc = server.voice_client
-            print(f"{e}")
-        player.Queue(url)
-        commandChannelID = interaction.channel_id
-        print(f"VC status {player.songQueue}")
-        if(vc.is_playing() != True):
-            await client.loop.run_in_executor(None,player.Play,player.songQueue.pop(),commandChannelID,False)
+    print(f"channel: {interaction.channel.name}")
+    if(interaction.channel.name == "song"):
+        if(interaction.user.voice != None):
+            await interaction.response.send_message(f'Added to Queue: {url}')
+            try:
+                channel = interaction.user.voice.channel
+                vc = await channel.connect()
+            except Exception as e:
+                server = interaction.guild
+                vc = server.voice_client
+                print(f"{e}")
+            player.Queue(url)
+            commandChannelID = interaction.channel_id
+            print(f"VC status {player.songQueue}")
+            if(vc.is_playing() != True):
+                await client.loop.run_in_executor(None,player.Play,player.songQueue.pop(),commandChannelID,False)
+        else:
+            await interaction.response.send_message(f'Enter a voice channel first')
     else:
-        await interaction.response.send_message(f'Enter a voice channel first')
+        await interaction.response.send_message(f'Wrong Channel')
 
 client.run(TOKEN)

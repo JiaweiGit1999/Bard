@@ -45,7 +45,8 @@ class Player:
     "quiet": True,
     "noprogress": True,
     "yes-playlist": True,
-    "playlist_items": "1"
+    "playlist_items": "1",
+    'cookiefile': 'cookies.txt'
   }
   ffmpegOptions = "-vn"
   beforeOptions = "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
